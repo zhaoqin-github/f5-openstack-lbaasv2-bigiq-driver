@@ -1,0 +1,42 @@
+sudo: required
+
+services:
+  - docker
+
+language: python
+
+python:
+  - '2.7'
+
+env:
+  global:
+    - PKG_NAME="f5-openstack-lbaasv2-bigiq-driver"
+    - PKG_VERSION=$(python -c "import f5_lbaasv2_bigiq_dirver; print f5_lbaasv2_bigiq_dirver.__version__")
+    - BUILD_NUMBER=${TRAVIS_BUILD_ID}
+    - DIST_REPO="dist"
+    - BUILD_CONTAINER=${PKG_NAME}-builder
+    - BUILD_DIR="/build"
+
+install:
+  - pip install flake8
+
+script:
+  - flake8 neutron_lbaas f5_lbaasv2_bigiq_dirver
+  - docker build -t ${BUILD_CONTAINER} docker
+  - docker run --privileged --rm -v $(pwd):${BUILD_DIR} ${BUILD_CONTAINER} /bin/bash -e ${BUILD_DIR}/scripts/build.sh -d /build -n ${BUILD_NUMBER}
+
+deploy:
+  provider: releases
+  api_key: ${GITHUB_TOKEN}
+  file: ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
+  skip_cleanup: true
+  draft: true
+
+deploy:
+  provider: releases
+  api_key: ${GITHUB_TOKEN}
+  file: ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
+  skip_cleanup: true
+  draft: false
+  on:
+    tags: true
