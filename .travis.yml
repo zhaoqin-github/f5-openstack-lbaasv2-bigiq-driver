@@ -38,3 +38,5 @@ deploy:
   file: ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
   skip_cleanup: true
   draft: true
+  name: ${TAG}
+  release_notes: "https://travis-ci.com/github/zhaoqin-github/f5-openstack-lbaasv2-bigiq-driver/builds/${TRAVIS_BUILD_ID}"
