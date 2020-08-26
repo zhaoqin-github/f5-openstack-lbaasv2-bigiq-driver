@@ -25,20 +25,16 @@ script:
   - docker build -t ${BUILD_CONTAINER} docker
   - docker run --privileged --rm -v $(pwd):${BUILD_DIR} ${BUILD_CONTAINER} /bin/bash -e ${BUILD_DIR}/scripts/build.sh -d /build -n ${BUILD_NUMBER}
 
-deploy:
-  provider: releases
-  api_key: ${GITHUB_TOKEN}
-  file: ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
-  skip_cleanup: true
-  draft: true
-  on:
-    tags: false
+before_deploy:
+  # Set a local tag to deploy dev build
+  - git config --local user.name "Qin Zhao"
+  - git config --local user.email "q.zhao@f5.com"
+  - TAG="travis-${BUILD_NUMBER}"
+  - git tag ${TAG}
 
 deploy:
   provider: releases
   api_key: ${GITHUB_TOKEN}
   file: ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
   skip_cleanup: true
-  draft: false
-  on:
-    tags: true
+  draft: true
