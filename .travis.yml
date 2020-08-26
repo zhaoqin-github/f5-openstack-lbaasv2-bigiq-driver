@@ -39,8 +39,10 @@ deploy:
     api_key: ${GITHUB_TOKEN}
     file: ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
     skip_cleanup: true
-    draft: true
+    draft: false
     name: "Travis-${BUILD_NUMBER}"
     release_notes: "[Travis CI build ${TRAVIS_BUILD_ID}](https://travis-ci.com/github/${GITHUB_REPO}/builds/${TRAVIS_BUILD_ID})"
+    prerelease: true
     on:
       repo: ${GITHUB_REPO}
+      tags: true
