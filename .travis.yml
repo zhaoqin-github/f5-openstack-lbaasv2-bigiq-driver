@@ -45,4 +45,3 @@ deploy:
     prerelease: true
     on:
       repo: ${GITHUB_REPO}
-      tags: true
