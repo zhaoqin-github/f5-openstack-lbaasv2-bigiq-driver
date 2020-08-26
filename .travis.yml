@@ -10,6 +10,7 @@ python:
 
 env:
   global:
+    - GITHUB_REPO="zhaoqin-github/f5-openstack-lbaasv2-bigiq-driver"
     - PKG_NAME="f5-openstack-lbaasv2-bigiq-driver"
     - PKG_VERSION=$(python -c "import f5_lbaasv2_bigiq_dirver; print f5_lbaasv2_bigiq_dirver.__version__")
     - BUILD_NUMBER=${TRAVIS_BUILD_ID}
@@ -34,9 +35,10 @@ before_deploy:
 
 deploy:
   provider: releases
+  edge: true
   api_key: ${GITHUB_TOKEN}
   file: ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
   skip_cleanup: true
   draft: true
   name: "Travis-${BUILD_NUMBER}"
-  body: "[Travis CI build ${TRAVIS_BUILD_ID}](https://travis-ci.com/github/zhaoqin-github/f5-openstack-lbaasv2-bigiq-driver/builds/${TRAVIS_BUILD_ID})"
+  release_notes: "[Travis CI build ${TRAVIS_BUILD_ID}](https://travis-ci.com/github/${GITHUB_REPO}/builds/${TRAVIS_BUILD_ID})"
