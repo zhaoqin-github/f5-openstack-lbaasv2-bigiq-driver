@@ -27,14 +27,14 @@ class F5BIGIQDriver(driver_base.LoadBalancerBaseDriver):
         self.l7rule = L7RuleManager(self)
 
         if not env:
-            msg = "F5LBaaSV2Driver cannot be intialized because the "\
+            msg = "F5BIGIQDriver cannot be intialized because the "\
                 "environment is not defined. To set the environment, edit "\
                 "neutron_lbaas.conf and append the environment name to the "\
                 "service_provider class name."
             LOG.debug(msg)
             raise UndefinedEnvironment(msg)
 
-        LOG.debug("F5LBaaSV2Driver: initializing, version=%s, impl=%s, env=%s"
+        LOG.debug("F5BIGIQDriver: initializing, version=%s, impl=%s, env=%s"
                   % (VERSION, f5_lbaasv2_bigiq_driver.__version__, env))
 
         self.bigiq = BIGIQDriver(plugin, env)
