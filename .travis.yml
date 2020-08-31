@@ -16,7 +16,7 @@ env:
     - BUILD_NUMBER=${TRAVIS_BUILD_ID}
     - DIST_REPO="dist"
     - BUILD_CONTAINER=${PKG_NAME}-builder
-    - BUILD_DIR="/build"
+    - BUILD_DIR="/${PKG_NAME}-build"
 
 install:
   - pip install flake8
@@ -27,7 +27,7 @@ script:
 after_success:
   - tar -cf neutron_lbaas.tar neutron_lbaas && gzip neutron_lbaas.tar
   - docker build -t ${BUILD_CONTAINER} docker
-  - docker run --privileged --rm -v $(pwd):${BUILD_DIR} ${BUILD_CONTAINER} /bin/bash -e ${BUILD_DIR}/scripts/build.sh -d /build -n ${BUILD_NUMBER}
+  - docker run --privileged --rm -v $(pwd):${BUILD_DIR} ${BUILD_CONTAINER} /bin/bash -e ${BUILD_DIR}/scripts/build.sh -d ${BUILD_DIR} -n ${BUILD_NUMBER}
 
 before_deploy:
   # Set a local tag to deploy dev build
