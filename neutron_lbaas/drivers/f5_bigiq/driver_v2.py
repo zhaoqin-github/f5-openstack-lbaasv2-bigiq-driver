@@ -1,21 +1,16 @@
-import f5_lbaasv2_bigiq_driver
-from f5_lbaasv2_bigiq_dirver.driver import BIGIQDriver
-
 from oslo_log import log as logging
 
 from neutron_lbaas.drivers import driver_base
 
-VERSION = "1.0.0"
+import f5_lbaasv2_bigiq_driver
+from f5_lbaasv2_bigiq_driver.driver import BIGIQDriver
+
 LOG = logging.getLogger(__name__)
-
-
-class UndefinedEnvironment(Exception):
-    pass
 
 
 class F5BIGIQDriver(driver_base.LoadBalancerBaseDriver):
 
-    def __init__(self, plugin, env='Project'):
+    def __init__(self, plugin):
         super(F5BIGIQDriver, self).__init__(plugin)
 
         self.load_balancer = LoadBalancerManager(self)
@@ -26,18 +21,10 @@ class F5BIGIQDriver(driver_base.LoadBalancerBaseDriver):
         self.l7policy = L7PolicyManager(self)
         self.l7rule = L7RuleManager(self)
 
-        if not env:
-            msg = "F5BIGIQDriver cannot be intialized because the "\
-                "environment is not defined. To set the environment, edit "\
-                "neutron_lbaas.conf and append the environment name to the "\
-                "service_provider class name."
-            LOG.debug(msg)
-            raise UndefinedEnvironment(msg)
+        LOG.debug("F5 LBaaSv2 BIG-IQ Driver initializing, version=%s",
+                  f5_lbaasv2_bigiq_driver.__version__)
 
-        LOG.debug("F5BIGIQDriver: initializing, version=%s, impl=%s, env=%s"
-                  % (VERSION, f5_lbaasv2_bigiq_driver.__version__, env))
-
-        self.bigiq = BIGIQDriver(plugin, env)
+        self.bigiq = BIGIQDriver(plugin)
 
 
 class LoadBalancerManager(driver_base.BaseLoadBalancerManager):
@@ -97,14 +84,14 @@ class MemberManager(driver_base.BaseMemberManager):
 class HealthMonitorManager(driver_base.BaseHealthMonitorManager):
 
     def create(self, context, health_monitor):
-        self.driver.bigiq.healthmonitor.create(context, health_monitor)
+        self.driver.bigiq.health_monitor.create(context, health_monitor)
 
     def update(self, context, old_health_monitor, health_monitor):
-        self.driver.bigiq.healthmonitor.update(context, old_health_monitor,
-                                               health_monitor)
+        self.driver.bigiq.health_monitor.update(context, old_health_monitor,
+                                                health_monitor)
 
     def delete(self, context, health_monitor):
-        self.driver.bigiq.healthmonitor.delete(context, health_monitor)
+        self.driver.bigiq.health_monitor.delete(context, health_monitor)
 
 
 class L7PolicyManager(driver_base.BaseL7PolicyManager):

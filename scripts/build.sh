@@ -5,14 +5,14 @@ usage() {
 }
 
 build() {
-  m2r README.md
+  rm -f README.rst && m2r README.md
   python setup.py bdist_rpm --release ${BUILD_NUMBER}
 }
 
 clean() {
   rm -rf \
     README.rst build dist \
-    f5_lbaasv2_bigiq_dirver/__init__.pyc \
+    f5_lbaasv2_bigiq_driver/__init__.pyc \
     f5_openstack_lbaasv2_bigiq_driver.egg-info
 }
 

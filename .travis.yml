@@ -12,7 +12,7 @@ env:
   global:
     - GITHUB_REPO="zhaoqin-github/f5-openstack-lbaasv2-bigiq-driver"
     - PKG_NAME="f5-openstack-lbaasv2-bigiq-driver"
-    - PKG_VERSION=$(python -c "import f5_lbaasv2_bigiq_dirver; print f5_lbaasv2_bigiq_dirver.__version__")
+    - PKG_VERSION=$(python -c "import f5_lbaasv2_bigiq_driver; print f5_lbaasv2_bigiq_driver.__version__")
     - BUILD_NUMBER=${TRAVIS_BUILD_ID}
     - DIST_REPO="dist"
     - BUILD_CONTAINER=${PKG_NAME}-builder
@@ -22,7 +22,7 @@ install:
   - pip install flake8
 
 script:
-  - flake8 neutron_lbaas f5_lbaasv2_bigiq_dirver
+  - flake8 neutron_lbaas f5_lbaasv2_bigiq_driver
 
 after_success:
   - tar -cf neutron_lbaas.tar neutron_lbaas && gzip neutron_lbaas.tar
