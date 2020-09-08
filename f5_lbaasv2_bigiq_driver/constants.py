@@ -1,0 +1,7 @@
+LBAASV2_BIGIQ_AGENT_TYPE = 'F5 LBaasV2 BIG-IQ Agent'
+
+# RPC channel names
+TOPIC_LBAASV2_BIGIQ_DRIVER = "f5-lbaasv2-bigiq-driver"
+TOPIC_LBAASV2_BIGIQ_AGENT = "f5-lbaasv2-bigiq-agent"
+RPC_API_VERSION = '1.0'
+RPC_API_NAMESPACE = None
