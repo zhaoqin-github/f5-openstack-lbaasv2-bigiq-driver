@@ -22,10 +22,9 @@ install:
   - pip install flake8
 
 script:
-  - flake8 neutron_lbaas f5_lbaasv2_bigiq_driver
+  - flake8 f5_lbaasv2_bigiq_driver
 
 after_success:
-  - tar -cf neutron_lbaas.tar neutron_lbaas && gzip neutron_lbaas.tar
   - docker build -t ${BUILD_CONTAINER} docker
   - docker run --privileged --rm -v $(pwd):${BUILD_DIR} ${BUILD_CONTAINER} /bin/bash -e ${BUILD_DIR}/scripts/build.sh -d ${BUILD_DIR} -n ${BUILD_NUMBER}
 
@@ -41,7 +40,6 @@ deploy:
     edge: true
     api_key: ${GITHUB_TOKEN}
     file:
-      - neutron_lbaas.tar.gz
       - ${DIST_REPO}/${PKG_NAME}-${PKG_VERSION}-${BUILD_NUMBER}.noarch.rpm
     skip_cleanup: true
     draft: true
